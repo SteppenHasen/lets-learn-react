@@ -41,7 +41,15 @@ const Item = ({ title, url, author, num_comments, points }) => (
   </div>
 );
 
-
+const useSemiPersistentState = (key, initialState) => {
+  const [value, setValue] = React.useState(
+    localStorage.getItem(key) || initialState
+  );
+  React.useEffect(() => {
+    localStorage.setItem(key, value);
+  }, [value, key]);
+  return [value, setValue];
+}; 
 
 const Search = props => {
   return (
@@ -76,16 +84,7 @@ const App = () => {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search') || 'React');
-
-  React.useEffect(() => {
-    localStorage.setItem('search', searchTerm);
-    }, [searchTerm]);
-    
-    const handleSearch = event => {
-    setSearchTerm(event.target.value);
-    };
-    
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
 
   const searchedStories = stories.filter(story => {
     return story.title
@@ -98,7 +97,7 @@ const App = () => {
     <div>
     <h1>{welcome.greeting} {welcome.title}</h1>
 
-    <Search search={searchTerm} onSearch={handleSearch}/>
+    <Search search={searchTerm} onSearch={setSearchTerm}/>
 
     <List list={searchedStories}/>
 
