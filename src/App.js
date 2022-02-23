@@ -51,18 +51,17 @@ const useSemiPersistentState = (key, initialState) => {
   return [value, setValue];
 }; 
 
-const Search = props => {
-  return (
-    <div>
-    <label htmlFor="search">Search: </label>
-    <input id="search" type="text" value={props.search} onSearch={props.onSearch} />
-
-    <p>
-      Searching for <strong>{searchTerm}</strong>.
-    </p>
-    </div>
-  );
-};
+const InputWithLabel = ({ id, label, value, onInputChange }) => (
+  <>
+  <label htmlFor={id}>{label}</label>
+  &nbsp;
+  <input
+  id={id}
+  type={type}
+  value={value}
+  onChange={onInputChange}/>
+  </>
+);
 
 const App = () => {
   const stories = [
@@ -97,7 +96,12 @@ const App = () => {
     <div>
     <h1>{welcome.greeting} {welcome.title}</h1>
 
-    <Search search={searchTerm} onSearch={setSearchTerm}/>
+    <InputWithLabel
+      id="search"
+      label="Search"
+      value={searchTerm}
+      onInputChange={handleSearch}
+    />
 
     <List list={searchedStories}/>
 
