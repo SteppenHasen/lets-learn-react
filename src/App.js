@@ -51,9 +51,9 @@ const useSemiPersistentState = (key, initialState) => {
   return [value, setValue];
 }; 
 
-const InputWithLabel = ({ id, label, value, onInputChange }) => (
+const InputWithLabel = ({ id, children, value, onInputChange, type = 'text' }) => (
   <>
-  <label htmlFor={id}>{label}</label>
+  <label htmlFor={id}>{children}</label>
   &nbsp;
   <input
   id={id}
@@ -98,10 +98,12 @@ const App = () => {
 
     <InputWithLabel
       id="search"
-      label="Search"
       value={searchTerm}
       onInputChange={handleSearch}
-    />
+      >
+      <strong>Search:</strong>
+    </InputWithLabel>
+
 
     <List list={searchedStories}/>
 
